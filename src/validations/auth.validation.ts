@@ -64,3 +64,17 @@ export const signupSchema = z
   .strict();
 
 export type SignupInput = z.infer<typeof signupSchema>;
+
+export const loginSchema = z
+  .object({
+    email: z
+      .string()
+      .trim()
+      .email("Please provide a valid email address")
+      .toLowerCase(),
+
+    password: z.string().min(1, "Password is required"),
+  })
+  .strict();
+
+export type LoginInput = z.infer<typeof loginSchema>;
