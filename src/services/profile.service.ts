@@ -9,7 +9,7 @@ export async function updateProfile(userId: string, input: UpdateProfileInput) {
       $set: input,
     },
     {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     },
   );
