@@ -2,6 +2,7 @@ import express from "express";
 import authRouter from "./routes/auth.routes.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import cookieParser from "cookie-parser";
+import profileRouter from "./routes/profile.routes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/", (_request, response) => {
 
 // Auth routes
 app.use("/api/auth", authRouter);
+app.use("/api/profile", profileRouter);
 
 // Error middleware always routes ke baad
 app.use(errorHandler);
