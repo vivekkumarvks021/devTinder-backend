@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import profileRouter from "./routes/profile.routes.js";
 import connectionRequestRouter from "./routes/connection-request.routes.js";
 import feedRouter from "./routes/feed.routes.js";
+import userRouter from "./routes/user.routes.js";
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.get("/", (_request, response) => {
 app.use("/api/auth", authRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/requests", connectionRequestRouter);
-app.use("/api/users", feedRouter);
+app.use("/api/users", userRouter);
 
 // Error middleware always routes ke baad
 app.use(errorHandler);

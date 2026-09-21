@@ -105,3 +105,41 @@ export async function reviewConnectionRequest(
 
   return updatedRequest;
 }
+
+const USER_SAFE_FIELDS = "firstName lastName age gender about photoUrl skills";
+
+// Pending requests received by logged-in user
+export async function getPendingRequests(userId: string) {
+  return ConnectionRequest.find({
+    toUserId: userId,
+    status: "interested",
+  }).populate("fromUserId", USER_SAFE_FIELDS);
+}
+
+// Accepted connections of logged-in user
+export async function getUserConnections(userId: string) {
+  const connections = await ConnectionRequest.find({
+    status: "accepted",
+
+    $or: [
+      {
+        fromUserId: userId,
+      },
+      {
+        toUserId: userId,
+      },
+    ],
+  })
+    .populate("fromUserId", USER_SAFE_FIELDS)
+    .populate("toUserId", USER_SAFE_FIELDS);
+
+  return connections.map((connection) => {
+    const fromUser = connection.fromUserId as unknown as {
+      _id: { toString(): string };
+    };
+
+    const isSender = fromUser._id.toString() === userId.toString();
+
+    return isSender ? connection.toUserId : connection.fromUserId;
+  });
+}

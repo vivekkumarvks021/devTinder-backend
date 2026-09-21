@@ -1,6 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 
 import {
+  getPendingRequests,
+  getUserConnections,
   reviewConnectionRequest,
   sendConnectionRequest,
 } from "../services/connection-request.service.js";
@@ -70,4 +72,34 @@ export async function reviewRequest(
   } catch (error) {
     next(error);
   }
+}
+
+export async function getPendingRequestsController(
+  request: Request,
+  response: Response,
+) {
+  const loggedInUserId = String(request.user!._id);
+
+  const requests = await getPendingRequests(loggedInUserId);
+
+  response.status(200).json({
+    success: true,
+    message: "Pending connection requests fetched successfully",
+    data: requests,
+  });
+}
+
+export async function getUserConnectionsController(
+  request: Request,
+  response: Response,
+) {
+  const loggedInUserId = String(request.user!._id);
+
+  const connections = await getUserConnections(loggedInUserId);
+
+  response.status(200).json({
+    success: true,
+    message: "Connections fetched successfully",
+    data: connections,
+  });
 }
